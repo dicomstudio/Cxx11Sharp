@@ -13,6 +13,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    permissions:
+      packages: read
 
     steps:
     - uses: actions/checkout@v3
@@ -20,6 +22,8 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
+    - name: Add source
+      run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name dicomstudio "https://nuget.pkg.github.com/dicomstudio/index.json"
     - name: Restore dependencies
       run: dotnet restore
     - name: Build

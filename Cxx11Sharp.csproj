@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>DicomStudio.Cxx11Sharp</AssemblyName>
+    <RootNamespace>DicomStudio.Cxx11Sharp</RootNamespace>
+    <Authors>DicomStudio</Authors>
+    <AssemblyVersion>0.0.1.0</AssemblyVersion>
+    <PackageVersion>0.0.1.0</PackageVersion>
+    <PackageTags>native;cxx11</PackageTags>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Description>Cxx11.</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="dicomstudio.cxx11sharp.nativeassets" Version="0.0.1" />
+  </ItemGroup>
+
+</Project>
