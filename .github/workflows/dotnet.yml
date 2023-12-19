@@ -18,15 +18,23 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: CMake configure
+      run: cmake -S native -B build
+    - name: CMake build
+      run: cmake --build build --config Release
+    - name: CMake install
+      run: cmake --install build --prefix target/x86_64-unknown-linux-gnu
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-    - name: Add source
+    - name: Nuget add source
       run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name dicomstudio "https://nuget.pkg.github.com/dicomstudio/index.json"
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
+    - name: Manual copy
+      run: cp target/x86_64-unknown-linux-gnu/lib/libCxx11Sharp.so tests/DicomStudio.Cxx11.Tests/bin/Debug/net6.0/
     - name: Test
       run: dotnet test --no-build --verbosity normal
