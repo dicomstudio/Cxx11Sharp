@@ -4,7 +4,7 @@ using Xunit;
 
 namespace DicomStudio.Cxx11.Tests
 {
-    public class BufferedStreamWrapperTests
+    public class ManagedStreamBufTests
     {
         [Fact]
         public void DefaultTest()
@@ -14,8 +14,8 @@ namespace DicomStudio.Cxx11.Tests
             src.Write(bytes);
             src.Position = 0;
             var dst = new MemoryStream();
-            var srcWrap = new BufferedStreamWrapper(src);
-            var dstWrap = new BufferedStreamWrapper(dst);
+            var srcWrap = new ManagedStreamBuf(src);
+            var dstWrap = new ManagedStreamBuf(dst);
             srcWrap.CopyTo(dstWrap);
 
             Assert.Equal(bytes, dst.ToArray());
