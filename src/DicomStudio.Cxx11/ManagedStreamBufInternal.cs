@@ -41,6 +41,8 @@ namespace DicomStudio.Cxx11
 
         private readonly Func<byte[], int, int> _readFunction;
         private readonly Func<byte[], int, int> _writeFunction;
+        private readonly NativeLibrary.ReadDelegate _readDelegate; // keep alive
+        private readonly NativeLibrary.WriteDelegate _writeDelegate; // keep alive
         private readonly byte[] _buffer;
         private readonly StreamBufHandle _handle;
 
@@ -56,7 +58,9 @@ namespace DicomStudio.Cxx11
             _readFunction = readFunction;
             _writeFunction = writeFunction;
             _buffer = new byte[buffering];
-            _handle = NativeLibrary.create_managed_streambuf(Read, Write, _buffer);
+            _readDelegate = Read;
+            _writeDelegate = Write;
+            _handle = NativeLibrary.create_managed_streambuf(_readDelegate, _writeDelegate, _buffer);
 
             if (_handle.IsInvalid)
                 throw new ArgumentException("Invalid parameters");
@@ -75,7 +79,7 @@ namespace DicomStudio.Cxx11
         public void CopyTo(StreamBufHandle destination)
         {
             var ret = NativeLibrary.copy_to_managed_streambuf(_handle, destination);
-            if (ret != 0)
+            if (ret < 0)
             {
                 throw new IOException("CopyTo failure");
             }
